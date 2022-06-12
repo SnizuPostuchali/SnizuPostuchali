@@ -69,7 +69,6 @@ public class Simulation {
         if(x<0 || x>=width){
             return DEAD;
         }
-        
         if(y<0 || y>=height){
             return DEAD;
         }
