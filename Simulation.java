@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.gameoflifesimulator;
 
 /**
@@ -9,6 +6,9 @@ package com.mycompany.gameoflifesimulator;
  * @author Master
  */
 public class Simulation {
+    
+    public static final int DEAD = 0;
+    public static final int ALIVE = 1;
 
     int width;
     int height;
@@ -24,7 +24,7 @@ public class Simulation {
         for (int y = 0; y < height; y++) {
             String line = "|";
             for (int x = 0; x < width; x++) {
-                if (this.board[x][y] == 0) {
+                if (this.board[x][y] == DEAD) {
                     line += ".";
                 } else {
                     line += "*";
@@ -37,11 +37,11 @@ public class Simulation {
     }
     
     public void setAlive(int x, int y){
-        this.setState(x, y, 1);
+        this.setState(x, y, ALIVE);
     }
     
     public void setDead(int x, int y){
-        this.setState(x, y, 0);
+        this.setState(x, y, DEAD);
     }
     
     public void setState(int x, int y, int state){
@@ -67,11 +67,11 @@ public class Simulation {
     
     public int getState(int x, int y){
         if(x<0 || x>=width){
-            return 0;
+            return DEAD;
         }
         
         if(y<0 || y>=height){
-            return 0;
+            return DEAD;
         }
         return board[x][y];
     }
@@ -82,15 +82,15 @@ public class Simulation {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int aliveNeighbours = countAliveNeighbours(x, y);
-                if(this.board[x][y]==1){
+                if(this.board[x][y]==ALIVE){
                     if(aliveNeighbours < 2 || aliveNeighbours>3){
-                        newBoard[x][y]=0;
+                        newBoard[x][y]=DEAD;
                     } else {
-                        newBoard[x][y]=1;
+                        newBoard[x][y]=ALIVE;
                     }
                 } else {
                     if(aliveNeighbours == 3){
-                        newBoard[x][y]=1;
+                        newBoard[x][y]=ALIVE;
                     } 
                 }
             }

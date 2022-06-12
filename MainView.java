@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.gameoflifesimulator;
 
 import javafx.geometry.Point2D;
@@ -18,22 +15,16 @@ import javafx.scene.transform.*;
  * @author Master
  */
 public class MainView extends VBox{
-    
-    private Button stepButton;
+
     private Canvas canvas;
     
     private Affine affine;
     
     private Simulation simulation;
     
-    private int drawMode = 1;
+    private int drawMode = Simulation.ALIVE;
     
     public MainView() {
-        this.stepButton = new Button("step");
-        this.stepButton.setOnAction(actionEvent -> {
-            simulation.step();
-            draw();
-        });
         
         this.canvas = new Canvas(400, 400);
         this.canvas.setOnMousePressed(this::handleDraw);
@@ -41,7 +32,9 @@ public class MainView extends VBox{
         
         this.setOnKeyPressed(this::onKeyPressed);
         
-        this.getChildren().addAll(this.stepButton, this.canvas);
+        Toolbar toolbar = new Toolbar(this);
+        
+        this.getChildren().addAll(toolbar, this.canvas);
         
         this.affine = new Affine();
         this.affine.appendScale(40, 40);
@@ -60,7 +53,7 @@ public class MainView extends VBox{
             int simY = (int)simCoord.getY();
             
             System.out.println(simX + ", " + simY);
-            this.simulation.setState(simX, simY, drawMode);
+            this.simulation.setState(simX, simY,  drawMode);
             draw();
             
         } catch (NonInvertibleTransformException ex) {
@@ -71,10 +64,10 @@ public class MainView extends VBox{
     
     private void onKeyPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.D){
-            this.drawMode = 1;
+            this.drawMode = Simulation.ALIVE;
             System.out.println("draw Mode");
         } else if(keyEvent.getCode() == KeyCode.E){
-            this.drawMode = 0;
+            this.drawMode = Simulation.DEAD;
             System.out.println("erase Mode");
         }
     }
@@ -90,7 +83,7 @@ public class MainView extends VBox{
        g.setFill(Color.BLACK);
        for(int x=0; x< this.simulation.width; x++){
            for(int y=0; y< this.simulation.height; y++){
-               if(this.simulation.getState(x, y) == 1){             
+               if(this.simulation.getState(x, y) == Simulation.ALIVE){             
                    g.fillRect(x, y, 1, 1);
                }
            }
@@ -107,5 +100,11 @@ public class MainView extends VBox{
        }
     }
 
-    
+    public Simulation getSimulation() {
+        return this.simulation;
+    }
+
+    void setDrawMode(int newDrawMode) {
+        this.drawMode = newDrawMode;
+    }
 }
