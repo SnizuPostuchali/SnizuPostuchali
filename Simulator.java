@@ -1,5 +1,5 @@
 
-package com.mycompany.gameoflifesimulator;
+package com.mycompany.gameoflifesimulator.gol;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;

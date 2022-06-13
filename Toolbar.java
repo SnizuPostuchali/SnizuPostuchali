@@ -1,6 +1,7 @@
 
-package com.mycompany.gameoflifesimulator;
+package com.mycompany.gameoflifesimulator.gol;
 
+import com.mycompany.gameoflifesimulator.gol.model.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
@@ -11,6 +12,8 @@ import javafx.scene.control.*;
 public class Toolbar extends ToolBar{
     
     private MainView mainView;
+    
+    private Simulator simulator;
     
     public Toolbar(MainView mainView){
         this.mainView = mainView;
@@ -32,32 +35,41 @@ public class Toolbar extends ToolBar{
 
     private void handleDraw(ActionEvent actionEvent) {
         System.out.println("draw");
-        this.mainView.setDrawMode(Simulation.ALIVE);
+        this.mainView.setDrawMode(CellState.ALIVE);
     }
 
     private void handleErase(ActionEvent actionEvent) {
         System.out.println("erase");
-        this.mainView.setDrawMode(Simulation.DEAD);
+        this.mainView.setDrawMode(CellState.DEAD);
     }
 
     private void handleStep(ActionEvent actionEvent) {
         System.out.println("step");
-        this.mainView.setApplicationState(mainView.SIMULATING);
+        switchToSimulatingState();
         this.mainView.getSimulation().step();
         this.mainView.draw();
+    }
+    
+    private void switchToSimulatingState(){
+        if(this.mainView.getApplicationState() == MainView.EDITING){
+            this.mainView.setApplicationState(mainView.SIMULATING);
+            this.simulator = new Simulator(this.mainView, this.mainView.getSimulation());
+        }
+        
     }
 
     private void handleReset(ActionEvent actionEvent) {
         this.mainView.setApplicationState(mainView.EDITING);
+        this.simulator = null;
         this.mainView.draw();
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        this.mainView.setApplicationState(MainView.SIMULATING);
-        this.mainView.getSimulator().start();
+        switchToSimulatingState();
+        this.simulator.start();
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.mainView.getSimulator().stop();
+        this.simulator.stop();
     }
 }

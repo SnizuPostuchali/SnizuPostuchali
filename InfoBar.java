@@ -1,6 +1,7 @@
 
-package com.mycompany.gameoflifesimulator;
+package com.mycompany.gameoflifesimulator.gol;
 
+import com.mycompany.gameoflifesimulator.gol.model.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -29,9 +30,9 @@ public class InfoBar extends HBox{
         
     }
     
-    public void setDrawMode(int drawMode){
+    public void setDrawMode(CellState drawMode){
         String drawModeString;
-        if(drawMode == Simulation.ALIVE){
+        if(drawMode == CellState.ALIVE){
             drawModeString = "Drawing";
         } else {
             drawModeString = "Erasing";
